@@ -44,7 +44,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 def find_sql(files):
     sql_files = []
     for file in files:
-        if 'sql' in file:
+        if file.endswith('.sql'):
             sql_files.append(file)
     return sql_files
 
@@ -52,7 +52,7 @@ def find_sql(files):
 def find_str_infile(sql_files, find_str):
     find_files = []
     for file in sql_files:
-        with open(migrations + '/' + file) as f:
+        with open(os.path.join(migrations, file)) as f:
             for line in f:
                 if find_str in line:
                     find_files.append(file)
@@ -62,20 +62,16 @@ def find_str_infile(sql_files, find_str):
 
 def print_list_of_files(find_files):
     for file in find_files:
-        print(file)
+        print('\n'.join(find_files))
     print('Всего {}'.format(len(find_files)))
 
 
 if __name__ == '__main__':
-    files = os.listdir(path="migrations")
-
-
+    files = os.listdir(migrations)
     sql_files = find_sql(files)
-
     while True:
         find_str = input('Введите строку: ')
         find_files = find_str_infile(sql_files, find_str)
         print_list_of_files(find_files)
         sql_files = find_files.copy()
         find_files.clear()
-    pass
