@@ -53,10 +53,8 @@ def find_str_infile(sql_files, find_str):
     find_files = []
     for file in sql_files:
         with open(os.path.join(migrations, file)) as f:
-            for line in f:
-                if find_str in line:
-                    find_files.append(file)
-                    break
+            if find_str in f.read():
+                find_files.append(file)
     return find_files
 
 
@@ -73,5 +71,4 @@ if __name__ == '__main__':
         find_str = input('Введите строку: ')
         find_files = find_str_infile(sql_files, find_str)
         print_list_of_files(find_files)
-        sql_files = find_files.copy()
-        find_files.clear()
+        sql_files = find_files
